@@ -1,0 +1,66 @@
+4. Implement nested sub queries. Perform a test for set membership (in, not in), set comparison 
+(<some, >=some, <all etc.) and set cardinality (unique, not unique).
+Consider following Employee table: 
+ +----+----------+-----+-----------+---------------------+ 
+ | ID | NAME | AGE | ADDRESS | SALARY | 
+ +----+----------+-----+-----------+----------------------+ 
+i. Consider a table Employee_BKP with similar structure as Employee table. copy complete 
+Employee table into Employee_BKP.
+ii. update SALARY by 0.25 times in Employee table for all the Employees whose AGE is 
+greater than or equal to 27.
+iii. delete records from Employee table for all the Employees whose AGE is greater than or equal 
+to 27.
+
+
+->
+
+CREATE TABLE Employee (
+    ID INT PRIMARY KEY,
+    FIRST_NAME VARCHAR(255),
+    LAST_NAME VARCHAR(255),
+    AGE INT,
+    ADDRESS VARCHAR(255),
+    SALARY DECIMAL(10, 2)
+);
+
+INSERT INTO Employee (ID, FIRST_NAME, LAST_NAME, AGE, ADDRESS, SALARY) VALUES
+(1, 'Karan', 'Rajput', 25, '123 Street, City', 55000.00),
+(2, 'Rohit', 'Musale', 30, '456 Avenue, Town', 60000.00),
+(3, 'Onkar', 'Warade', 35, '789 Road, Village', 65000.00),
+(4, 'Pratiksha', 'Patil', 25, '789 Road, Village', 50000.00);
+
+
+SELECT *
+FROM Employee
+WHERE AGE IN (25, 30, 35); 
+
+SELECT *
+FROM Employee
+WHERE AGE NOT IN (25, 30, 35); 
+
+SELECT *
+FROM Employee
+WHERE AGE < SOME (SELECT AGE FROM Employee WHERE SALARY > 50000); 
+
+SELECT *
+FROM Employee
+WHERE AGE >= ALL (SELECT AGE FROM Employee WHERE SALARY > 50000);
+
+
+SELECT DISTINCT AGE
+FROM Employee;
+
+SELECT AGE, COUNT(*)
+FROM Employee
+GROUP BY AGE
+HAVING COUNT(*) > 1; 
+
+
+
+CREATE TABLE Employee_BKP LIKE Employee;
+INSERT INTO Employee_BKP SELECT * FROM Employee; 
+
+
+UPDATE Employee SET SALARY = SALARY * 1.25 WHERE AGE >= 27;
+
+DELETE FROM Employee WHERE AGE >= 27;

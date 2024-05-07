@@ -1,0 +1,37 @@
+Create  database E1;
+
+use  E;
+
+CREATE TABLE Product (
+    order_id INT PRIMARY KEY,
+    product_name VARCHAR(255),
+    order_date DATE 
+);
+
+
+INSERT INTO Product (order_id, product_name, order_date) VALUES
+    (1, 'Jarlsberg Cheese', '2014-11-22 13:23:44.657');
+
+
+
+SELECT CURDATE() AS CurrentDate, CURTIME() AS CurrentTime, NOW() AS CurrentTimestamp;
+
+SELECT order_date FROM Product WHERE order_id = 1;
+
+
+SELECT YEAR(order_date) AS order_year,
+       MONTH(order_date) AS order_month,
+       DAY(order_date) AS order_day
+FROM Product WHERE order_id = 1;
+
+
+SELECT DATE_ADD(order_date, INTERVAL 3 DAY) AS order_date_after_3_days FROM Product WHERE order_id = 1;
+
+
+SELECT DATE_SUB(order_date, INTERVAL 1 MONTH) AS order_date_minus_1_month FROM Product WHERE order_id = 1;
+
+
+SELECT DATEDIFF(CURDATE(), order_date) AS days_since_order FROM Product WHERE order_id = 1;
+
+
+SELECT DATE_FORMAT(order_date, '%Y-%m-%d') AS formatted_order_date FROM Product WHERE order_id = 1;
